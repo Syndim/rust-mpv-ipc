@@ -1,0 +1,14 @@
+[package]
+name = "mpv_ipc"
+version = "0.1.0"
+authors = ["Syndim <Syndim3@gmail.com>"]
+
+[[bin]]
+name = "example"
+path = "src/bin/example.rs"
+
+[dependencies]
+rustc-serialize = "*"
+rand = "*"
+log = "*"
+env_logger = "*"
