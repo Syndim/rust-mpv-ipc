@@ -11,7 +11,7 @@ fn main() {
     mpv.pause().unwrap();
     thread::sleep(Duration::from_millis(2000));
     mpv.resume().unwrap();
-    let position = mpv.get_position().unwrap().unwrap();
-    // let duration = mpv.get_duration().unwrap().unwrap();
+    let position = mpv.get_position().unwrap();
+    // let duration = mpv.get_duration().unwrap();
     println!("{}", position);
 }

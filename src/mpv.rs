@@ -10,7 +10,10 @@ const EOL: &'static [u8; 1] = b"\n";
 macro_rules! get_data_from_response {
     ($res: ident) => {
         if $res.success() {
-            Ok($res.data)
+            match $res.data {
+                Some(value) => Ok(value),
+                None => Err(IoError::new(ErrorKind::Other, "value is empty"))
+            }
         } else {
             Err(IoError::new(ErrorKind::Other, "mpv says command failed"))
         }
@@ -67,25 +70,25 @@ impl MpvClient {
         self.write_command_without_response(cmd)
     }
 
-    pub fn get_is_paused(&mut self) -> Result<Option<bool>> {
+    pub fn get_is_paused(&mut self) -> Result<bool> {
         let cmd = Command::GetProperty(String::from("pause"));
         let response = self.write_command::<bool>(cmd)?;
         get_data_from_response!(response)
     }
 
-    pub fn get_position(&mut self) -> Result<Option<f32>> {
+    pub fn get_position(&mut self) -> Result<f32> {
         let cmd = Command::GetProperty(String::from("time-pos"));
         let response = self.write_command::<f32>(cmd)?;
         get_data_from_response!(response)
     }
 
-    pub fn get_remaining(&mut self) -> Result<Option<f32>> {
+    pub fn get_remaining(&mut self) -> Result<f32> {
         let cmd = Command::GetProperty(String::from("time-remaining"));
         let response = self.write_command::<f32>(cmd)?;
         get_data_from_response!(response)
     }
 
-    pub fn get_duration(&mut self) -> Result<Option<f32>> {
+    pub fn get_duration(&mut self) -> Result<f32> {
         let cmd = Command::GetProperty(String::from("duration"));
         let response = self.write_command::<f32>(cmd)?;
         get_data_from_response!(response)
